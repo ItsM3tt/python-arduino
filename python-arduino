@@ -1,0 +1,41 @@
+#python code
+
+import serial
+import time
+
+arduinoData = serial.Serial("COM3", 9600)
+
+colors = {"red" :(255,0,0),  "green" : (0,255,0),  "blue" : (0,0,255), "purple" : (205,0,255), "yellow" : (255,255,0), "orange" : (255,80,0), "aqua" : (0, 255, 255), "white" : (255, 255, 255), "off" : (0, 0, 0), }
+
+while True:
+    color = input("what is the color that you want?")
+    arduinoData.write(bytes(colors[color]))
+
+
+#arduino code
+
+int red = 0;
+int green = 0; 
+int blue = 0;
+int redPin = 9;
+int greenPin = 10;
+int bluePin = 11;
+
+void setup() {
+  
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+}
+
+void loop() {
+  if (Serial.available()){
+    delay(100);
+    red = Serial.read();
+    green = Serial.read();
+    blue = Serial.read();
+    analogWrite(redPin, red);
+    analogWrite(greenPin, green);
+    analogWrite(bluePin, blue);
+  }
+}
